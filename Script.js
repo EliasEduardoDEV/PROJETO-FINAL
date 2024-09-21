@@ -4,6 +4,8 @@
 // teste
 
 const quizData = [
+    // fase 1
+    [
     {
         question: "O poder da fruta Ope Ope no Mi pertence a qual personagem?",
         answers: [
@@ -22,7 +24,10 @@ const quizData = [
             { text: "Hyokaido", correct: false },
             { text: "Green Bit", correct: false }
         ]
-    },
+    }
+    ],
+    // fase 2
+    [
     {
         question: "Qual o nome do navio do considerado rei dos piratas?",
         answers: [
@@ -40,7 +45,10 @@ const quizData = [
             { text: "Donquixote Doflamingo", correct: false },
             { text: "Bartholomew Kuma", correct: false }
         ]
-    },
+    }
+   ],
+    // fase 3
+   [
     {
         question: "Qual foi o Yonkou que morreu na guerra de Marineford?",
         answers: [
@@ -57,9 +65,12 @@ const quizData = [
             { text: "Ryomen Sukuna", correct: true }
         ]
     }
+   ]
 ];
 
+let currentPhase = 0; // fase atual (0 = fase 1, 1 = fase 2, 2 = fase 3)
 let currentQuestionIndex = 0; // Índice para rastrear a pergunta atual
+let score = 0;
 
 // Função para carregar a pergunta atual
 function loadQuestion() { //Função principal
@@ -68,11 +79,16 @@ function loadQuestion() { //Função principal
     quizContainer.innerHTML = ""; // Limpa o conteúdo anterior (importante pra segunda pergunta em diante)
 
     // Pega a pergunta atual com base no índice
-    const currentQuestion = quizData[currentQuestionIndex];
-    const questionElement = document.createElement('p');
+    //const currentQuestion = quizData[currentQuestionIndex];
+    //const questionElement = document.createElement('p');
 
-    questionElement.textContent = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
-    quizContainer.appendChild(questionElement);
+   // questionElement.textContent = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
+   // quizContainer.appendChild(questionElement);
+
+   // carregar a pergunta atual por fase
+    const currentQuiz = quizData[currentPhase] [currentQuestionIndex];
+    quizContainer.textContent = currentQuiz.question;
+    
 
     // Cria botões para as respostas
     currentQuestion.answers.forEach((answerData, index) => {
@@ -86,6 +102,7 @@ function loadQuestion() { //Função principal
 
 // Função para verificar a resposta
 function checkAnswer(isCorrect, index) {
+    const currentQuiz = quizData[currentPhase] [currentQuestionIndex];
     //const feedback = document.getElementById('feedback');
     const button = document.getElementsByClassName('answer')
 
