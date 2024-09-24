@@ -109,18 +109,32 @@ function checkAnswer(isCorrect, index) {
     console.log("buttonoooooo ", button[index])
 
     console.log("button ", button)
-    if (isCorrect) {
+    //verifica se a resposta esta correta
+    if (isCorrect === currentQuiz.correct) {
+        score++;
         //feedback.textContent = "Resposta correta!";
         //feedback.style.color = "green";
         button[index].style.backgroundColor = "green";
         // Espera um momento antes de carregar a próxima pergunta
         setTimeout(() => {
             currentQuestionIndex++;
-            if (currentQuestionIndex < quizData.length) {
-                loadQuestion(); // Carrega a próxima pergunta
-                feedback.textContent = ""; // Limpa o feedback
-            } else {
-                showFinalMessage(); // Exibe mensagem final ao término do quiz
+            // verificar se a fase terminou
+            if (currentQuestionIndex >= quizData[currentPhase].length) {
+                currentQuestionIndex = 0;
+                //reseta o indice da pergunta pra proxima fase
+                currentPhase++;
+                // avança pra proxima fase
+
+                if(currentPhase >= quizData.length) {
+                    endQuiz()
+                } else {
+                    document.getElementById("quiz-container").innerHTML = `
+                    <h2>'Você derrotou o **** ${currentphase}! prepare-se para próxima fase.'</h2>
+
+                    <button onclick="loadnextphase()">iniciar fase ${currentPhase + 1}</button>`;            
+                    
+                }
+              
             }
         }, 1000); // Atraso de 1 segundo antes de passar para a próxima pergunta
     } else {
@@ -136,13 +150,27 @@ function checkAnswer(isCorrect, index) {
 
 
 }
+    // função para carregar a proxima pergunta
+    function loadnextphase(){
+        document.getElementById("quiz-container").innerHTML = `
+        <h2 id= "question"></h2>
+        <div id= "options"></div>
+        <buttom id="next-btn" onclick="nextQuestion()">Próxima Fase</button>
+        <p id="message"></p>
+        `;
+        loadQuestion();
+    }
 
+    function endQuiz() {
+        document.getElementById("quiz-container").innerHTML = `
+        <h2>Quiz terminado!! você acertou ${score} de ${quizData.flat().length} perguntas.</h2>`;
+    }
 // Função para exibir a mensagem final ao término do quiz
-function showFinalMessage() {
-    const quizContainer = document.getElementById('quiz');
-    quizContainer.innerHTML = "<p>Parabéns! Você completou o quiz.</p>";
+//function showFinalMessage() {
+  //  const quizContainer = document.getElementById('quiz');
+    //quizContainer.innerHTML = "<p>Parabéns! Você completou o quiz.</p>";
     //document.getElementById('feedback').textContent = ""; // Limpa o feedback
-}
+//}
 
 // Carrega a primeira pergunta ao iniciar
 loadQuestion();
